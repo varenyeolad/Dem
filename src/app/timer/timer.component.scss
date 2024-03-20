@@ -1,0 +1,33 @@
+.timer-container {
+	background: rgb(182,240,213);
+	background: linear-gradient(180deg, rgba(182,240,213,0.24693627450980393) 14%, rgba(129,193,222,0.7903536414565826) 87%);
+	border-radius: 8px;
+	width: 27em;
+	height: 13.5em;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	
+}
+
+.session-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.type-title-label {
+	font-size: 15pt;
+}
+
+.controls-container {
+	padding-top: 5px;
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+
+.time-left {
+	font-size: 70pt;
+}

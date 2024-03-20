@@ -1,0 +1,14 @@
+<div class="container"
+	[class.task-done] = "this.task.status === 'done'"
+	[class.task-selected] = "this.task.isSelected">
+	<div class="left-container">
+		<app-small-button *ngIf="this.task.status === 'done'" (click)="markAsPendingButtonEvent()"><fa-icon [icon]="faCircleCheckSolid"></fa-icon></app-small-button>
+		<app-small-button *ngIf="this.task.status === 'pending'" (click)="markAsDoneButtonEvent()"><fa-icon [icon]="faCircleCheckRegular"></fa-icon></app-small-button>
+	<div>{{task.name}}</div>
+	</div>
+	<div class="right-container">
+		<app-small-button *ngIf="!this.task.isSelected" (click)="this.selectCurrentTask()">select</app-small-button>
+		<div class="task-status">{{task.sessionsUsed}}/{{task.sessionsNeeded}}</div>
+		<app-small-button (click)="this.deleteTaskButtonEvent()"><fa-icon [icon]="faTrash"></fa-icon></app-small-button>
+	</div>
+</div>

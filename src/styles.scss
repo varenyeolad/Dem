@@ -1,1 +1,113 @@
-/* You can add global styles to this file, and also import other style files */
+// Material Icons
+$material-design-icons-font-directory-path: 'material-design-icons-iconfont/dist/fonts/';
+@import 'material-design-icons-iconfont/src/material-design-icons';
+
+@import 'shared/styles/volume-controls.scss';
+@import 'shared/styles/sound-controls.scss';
+@import 'shared/styles/animations.scss';
+$theme-colors: (
+  "iceblue": linear-gradient(180deg, rgba(182,240,213,0.24693627450980393) 14%, rgba(129,193,222,0.7903536414565826) 87%),
+  
+);
+
+* {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+  a, a:visited{
+    color: rgb(12, 165, 35);
+    text-decoration: none;
+  }
+}
+
+body {
+  background: rgb(238,174,202);
+background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+}
+
+// General layout
+.no-border {
+  border: 0px solid #ced4da;
+}
+
+.header {
+  text-align: center;
+  position: relative;
+}
+
+.header-controls {
+  width: 60%;
+  margin: 0.2rem;
+}
+
+.logo {
+  max-width: 40%;
+  height: auto;
+  animation: fadein 1s;
+
+
+}
+
+.text-1 {
+  color: rgb(216, 225, 237);
+  font-size: 14px;
+  font-weight: 100;
+}
+
+.list-container {
+  text-align: center;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sound-box {
+  text-align: center;
+  width: 190px;
+  display: inline-block;
+  padding: 10px;
+  margin-top: 2rem;
+  animation: createbox 600ms;
+  
+ 
+}
+
+.footer {
+  padding: 5px;
+  transition: ease-in 300ms;
+  animation: fadein 600ms;
+}
+
+.soundbox{
+  background: rgb(182,240,213);
+background: linear-gradient(180deg, rgba(182,240,213,0.24693627450980393) 14%, rgba(129,193,222,0.7903536414565826) 87%);
+  padding: 25px;
+  text-align: center;
+  // border: 1px solid #bbdae5;
+  border-radius: 8px;
+  transition: 0.2s;
+  box-shadow: 2px 2px 5px 2px #66a5bd61;
+}
+.playing {
+  box-shadow: 0 0 15px rgba(23, 54, 148, 0.5); /* Adjust the shadow properties as needed */
+}
+.favorite-btn {
+  position: relative;
+  bottom:15px;
+  right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  line-height: 0;
+  cursor: pointer;
+  color: #89b2c1;
+  border: 1px transparent #496e7b;
+  border-radius: 50%;
+  outline: none;
+  transition: 0.2s;
+
+  &:hover{
+     color: #fff;
+  }
+}

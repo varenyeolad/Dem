@@ -1,0 +1,15 @@
+.settings-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.section-title {
+	font-size: 20pt;
+	padding-bottom: 20px;
+}
+
+.selector-container {
+	display: flex;
+	flex-direction: row;
+	gap: 30px
+}

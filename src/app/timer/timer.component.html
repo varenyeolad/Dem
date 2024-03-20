@@ -1,0 +1,21 @@
+<div class="timer-container">
+	<div class="session-container">
+		<div class="time-left" *ngIf="this.timerState.type === 'session'">
+			<span>{{this.timerState.sessionMinute | timerDisplay}}</span>:<span>{{this.timerState.sessionSecond | timerDisplay}}</span>
+		</div>
+		<div class="time-left" *ngIf="this.timerState.type === 'break'">
+			<span>{{this.timerState.breakMinute | timerDisplay}}</span>:<span>{{this.timerState.breakSecond | timerDisplay}}</span>
+		</div>
+		<div class="type-title-label">
+			<span *ngIf="this.timerState.type === 'break'">Time to chill...</span>
+			<span *ngIf="this.timerState.type === 'session'">Time to work !</span>
+		</div>
+	</div>
+
+	<div class="controls-container">
+		<app-large-button *ngIf="this.timerState.state === 'stop'" (click)="changeState('start')"><fa-icon [icon]="faPlay"></fa-icon></app-large-button>
+		<app-large-button *ngIf="this.timerState.state === 'start'" (click)="changeState('stop')"><fa-icon [icon]="faPause"></fa-icon></app-large-button>
+		<app-large-button *ngIf="this.timerState.state === 'start'" (click)="skipTimer()"><fa-icon [icon]="faForwardStep"></fa-icon></app-large-button>
+		<app-large-button *ngIf="this.timerState.state === 'stop'" (click)="resetTimer()"><fa-icon [icon]="faRotateRight"></fa-icon></app-large-button>
+	</div>
+</div>

@@ -1,0 +1,8 @@
+<div class="timeselector-container">
+  <div class="length-label">{{timeSelectorName}} Length</div>
+  <div class="selector-container">
+    <app-small-button (click)="put(-1)">-</app-small-button>
+    <div class="length">{{value | timerDisplay}}</div>
+    <app-small-button (click)="put(+1)">+</app-small-button>
+  </div>
+</div>
