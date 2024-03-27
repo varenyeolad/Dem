@@ -1,18 +1,2 @@
-<div class="header">
-  <app-menu></app-menu>
-    <div>
-      <img alt="Dem" src="./assets/logo3.svg" class="logo" />
-    </div>
-    <div class="mute-btn" (click)="muteAllSounds()" title="Stop all sounds">
-      <i class="material-icons">volume_off</i> <br />
-    </div>
-  </div>
-
-  <div class="pomdoro-container"><app-pomodoro></app-pomodoro></div>
-  
-  <div class="list-container">
-    <app-soundbox *ngFor="let sound of soundList" [sound]="sound" class="sound-box"></app-soundbox>
-    <br /><br />
-  </div>
-  
-  
+<router-outlet></router-outlet>
+<app-toast></app-toast>

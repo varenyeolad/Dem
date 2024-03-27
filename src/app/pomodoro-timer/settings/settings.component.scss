@@ -1,0 +1,17 @@
+.settings-container {
+	display: flex;
+	justify-content: center;
+	padding: 35px;
+}
+
+.section-title {
+	font-size: 20pt;
+	padding-bottom: 20px;
+	color: #fff;
+}
+
+.selector-container {
+	display: flex;
+	flex-direction: row;
+	gap: 35px
+}

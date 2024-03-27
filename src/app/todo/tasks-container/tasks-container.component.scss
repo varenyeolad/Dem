@@ -1,0 +1,80 @@
+// Define theme colors as SCSS variables
+$iceblue: linear-gradient(180deg, rgba(182,240,213,0.24693627450980393) 14%, rgba(129,193,222,0.7903536414565826) 87%);
+
+.tasks-container {
+  display: flex;
+  flex-direction: column;// Use the SCSS variable here
+	padding: 30px;
+}
+
+.section-title {
+  font-size: 20pt;
+  padding-bottom: 20px;
+}
+
+.selector-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.space {
+  margin-bottom: 10px;
+}
+
+.small-button {
+  width: 5em;
+  height: 5em;
+  border: none;
+  border-radius: 3px;
+  background: none;
+  color: white;
+  font-weight: bolder;
+  
+  &:hover {
+    color: rgb(151, 255, 107);
+  }
+  
+  &:focus {
+    color: rgb(42, 102, 49);
+  }
+}
+
+.new-task-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #dd91b5d5; // Fallback color
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.task-name-input {
+  background: none;
+  border: none;
+  color: #fefae0;
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 12pt;
+  padding: 0px;
+  
+  &:focus {
+    outline: none;
+  }
+}
+
+.task-session-input {
+  background: none;
+  border: none;
+  border-radius: 5px;
+  background-color: #fefae0;
+  color: #012a3f;
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: 12pt;
+  padding: 5px;
+  width: 5em;
+  
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,0 +1,18 @@
+/* Importing Bootstrap SCSS file. */
+
+
+
+.navbar-toggler{ 
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    color: #fff;
+    transition: ease-in 300ms;
+    animation: fadein 600ms;
+}
+
+.mat-mdc-button:not(:disabled) {
+    color: white;
+}
+
+

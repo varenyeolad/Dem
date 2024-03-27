@@ -1,9 +1,7 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import { AfterViewInit, Component, Input, PLATFORM_ID, Inject} from '@angular/core';
+import { AfterViewInit, Component, Input, PLATFORM_ID, Inject, NgZone } from '@angular/core';
 import { Sound } from '../../shared/sound.interface';
-import { FavoriteService } from '../service/favorite.service';
-import { isPlatformBrowser } from '@angular/common'; // Import isPlatformBrowser
-
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-soundbox',
@@ -11,11 +9,11 @@ import { isPlatformBrowser } from '@angular/common'; // Import isPlatformBrowser
   styleUrls: ['./soundbox.component.scss'],
   animations: [
     trigger('fadeInOut', [
-      transition(':enter', [  
+      transition(':enter', [
         style({ opacity: 0 }),
         animate(300, style({ opacity: 1 }))
       ]),
-      transition(':leave', [  
+      transition(':leave', [
         animate(300, style({ opacity: 0 }))
       ])
     ])
@@ -27,63 +25,66 @@ export class SoundboxComponent implements AfterViewInit {
 
   public soundVolume = 0.30;
   public isFavorite!: boolean;
-
   private audioElement!: HTMLAudioElement;
   private volumeControl!: HTMLInputElement;
-  private audioCtx!: AudioContext;
-  private track!: MediaElementAudioSourceNode;
-  private gainNode!: GainNode;
+  private isInteracted = false; // Track if user has interacted with the component
 
-  // constructor(private favoriteService: FavoriteService) { }
-
-  // ngOnInit() {
-  //   const soundId = this.sound.id(null, "") as string;
-  //   this.isFavorite = this.favoriteService.isFavorite(soundId);
-  // }
-
-
-
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private zone: NgZone // Inject NgZone
+  ) {}
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
-      this.audioElement = (document.getElementById(this.sound.filename) as HTMLAudioElement);
-      this.volumeControl = (document.getElementById(this.sound.filename + "-volume") as HTMLInputElement);
+      this.zone.runOutsideAngular(() => {
+        this.audioElement = (document.getElementById(this.sound.filename) as HTMLAudioElement);
+        this.volumeControl = (document.getElementById(this.sound.filename + "-volume") as HTMLInputElement);
+
+        // Retrieve playing state from local storage
+        const isPlaying = localStorage.getItem(this.sound.filename);
+        if (isPlaying === 'true') {
+          this.zone.run(() => {
+            this.playAudio();
+          });
+        }
+      });
     }
   }
 
   audioControls(sound: Sound): void {
-    if (!this.track) {
-      this.audioCtx = new AudioContext();
-      this.track = this.audioCtx.createMediaElementSource(this.audioElement);
-      this.gainNode = this.audioCtx.createGain();
-      this.gainNode.gain.value = this.soundVolume;
-      this.track.connect(this.gainNode).connect(this.audioCtx.destination);
-      this.audioCtx.resume();
+    if (this.audioElement.paused) {
+      this.playAudio();
+    } else {
+      this.pauseAudio();
+    }
+  }
+
+  playAudio(): void {
+    if (!this.isInteracted) {
+      this.isInteracted = true; // Set flag indicating user interaction
     }
 
-    if (this.audioElement.paused) {
-      this.volumeControls();
-      sound.playing = true;
-      this.audioElement.play();
-    } else {
-      sound.playing = false;
-      this.audioElement.pause();
-    }
+    this.volumeControls();
+    this.audioElement.play().catch(error => {
+      // Auto-play was prevented, handle it here (e.g., show a play button)
+      console.error('Auto-play was prevented:', error);
+    });
+
+    this.sound.playing = true;
+    // Store playing state in local storage
+    localStorage.setItem(this.sound.filename, 'true');
+  }
+
+  pauseAudio(): void {
+    this.audioElement.pause();
+    this.sound.playing = false;
+    // Remove playing state from local storage
+    localStorage.removeItem(this.sound.filename);
   }
 
   volumeControls(): void {
     this.volumeControl.addEventListener('input', (e) => {
-      if (this.gainNode) {
-        this.gainNode.gain.value = Number((e.target as HTMLInputElement).value);
-      }
+      this.audioElement.volume = Number((e.target as HTMLInputElement).value);
     }, false);
   }
-
-  // toggleFavorite(): void {
-  //   // Call the id method with dummy values
-  //   const soundId = this.sound.id(null, ""); // Pass appropriate dummy values
-  //   this.favoriteService.toggleFavorite(soundId as string);
-  //   this.isFavorite = !this.isFavorite;
-  // }
 }

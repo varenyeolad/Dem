@@ -18,7 +18,7 @@ import { Component, OnInit } from '@angular/core';
     }
 
     .large-button:hover {
-      color: #c7c7c7;
+      color: #000000;
     }
   `]
 })

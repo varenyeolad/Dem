@@ -1,0 +1,18 @@
+<div class="tasks-container">
+
+	<div class="selector-container">
+		<app-task *ngFor="let task of this.tasksState.tasks" [task]="task"></app-task>
+	</div>
+
+	<div *ngIf="this.tasksState.tasks.length !== 0" class="space"></div>
+
+	<form (ngSubmit)="addTask()" #taskForm="ngForm">
+		<div class="new-task-form">
+			<input [(ngModel)]="formName" type="text" class="task-name-input" name="taskName" placeholder="new task..." required autocomplete="off"/>
+			<label for="sessionNeeded">Sessions needed : </label>
+			<input [(ngModel)]="formSessionNeeded" type="number" class="task-session-input" name="sessionNeeded" min="1" required/>
+			<app-small-button type="submit" [disabled]="taskForm.invalid">+</app-small-button>
+		</div>
+	</form>
+
+</div>

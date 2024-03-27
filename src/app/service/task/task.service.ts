@@ -1,43 +1,75 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Task, TaskState } from '../../type/Task';
-import { TimerService } from '../timer/timer.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
 
-  public tasksState: TaskState = {tasks: [{name: 'Task 1', isSelected: true, sessionsUsed: 0, sessionsNeeded: 1, status: 'pending'}] };
+  private tasksStateKey = 'tasksState';
 
-  constructor() { }
+  public tasksState: TaskState = this.loadTasksStateFromLocalStorage();
+
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
+
+  private loadTasksStateFromLocalStorage(): TaskState {
+    if (isPlatformBrowser(this.platformId)) {
+      const tasksStateString = localStorage.getItem(this.tasksStateKey);
+      try {
+        return tasksStateString ? JSON.parse(tasksStateString) : { tasks: [] };
+      } catch (error) {
+        console.error('Error parsing tasks state from local storage:', error);
+        return { tasks: [] }; // Return empty tasks state on error
+      }
+    } else {
+      return { tasks: [] }; // Return empty tasks state on server-side
+    }
+  }
+
+  private saveTasksStateToLocalStorage(tasksState: TaskState): void {
+    if (isPlatformBrowser(this.platformId)) {
+      try {
+        localStorage.setItem(this.tasksStateKey, JSON.stringify(tasksState));
+      } catch (error) {
+        console.error('Error saving tasks state to local storage:', error);
+      }
+    }
+  }
 
   addTask(task: Task) {
-    this.tasksState.tasks.push(task)
+    this.tasksState.tasks.push(task);
+    this.saveTasksStateToLocalStorage(this.tasksState);
   }
 
   selectCurrentTask(task: Task) {
-    this.tasksState.tasks.map((e) => {
-      if (e.isSelected === true) {
-        e.isSelected = false;
-      }
-    })
-    this.tasksState.tasks[this.tasksState.tasks.indexOf(task)].isSelected = true;
+    this.tasksState.tasks.forEach((e) => {
+      e.isSelected = (e === task);
+    });
+    this.saveTasksStateToLocalStorage(this.tasksState);
   }
 
   changeStatus(task: Task, status: 'pending' | 'done') {
-    this.tasksState.tasks[this.tasksState.tasks.indexOf(task)].status = status;
+    const foundTask = this.tasksState.tasks.find(e => e === task);
+    if (foundTask) {
+      foundTask.status = status;
+      this.saveTasksStateToLocalStorage(this.tasksState);
+    }
   }
+  
 
   deleteTask(task: Task) {
-    this.tasksState.tasks.splice(this.tasksState.tasks.indexOf(task), 1);
+    this.tasksState.tasks = this.tasksState.tasks.filter(e => e !== task);
+    this.saveTasksStateToLocalStorage(this.tasksState);
   }
 
   incrementSessionUsedCounterOfCurrentTask() {
-    this.tasksState.tasks.map((e) => {
-      if (e.isSelected) {
-        e.sessionsUsed++;
-      }
-    })
+    const currentTask = this.tasksState.tasks.find(e => e.isSelected);
+    if (currentTask) {
+      currentTask.sessionsUsed++;
+      this.saveTasksStateToLocalStorage(this.tasksState);
+    }
   }
-
 }
